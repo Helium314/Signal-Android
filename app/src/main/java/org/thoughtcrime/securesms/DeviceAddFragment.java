@@ -5,11 +5,14 @@ import android.annotation.TargetApi;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -40,6 +43,23 @@ public class DeviceAddFragment extends LoggingFragment {
     QrScannerView scannerView = container.findViewById(R.id.scanner);
     this.devicesImage = container.findViewById(R.id.devices);
     ViewCompat.setTransitionName(devicesImage, "devices");
+    EditText et = container.findViewById((R.id.replacement_text));
+    et.addTextChangedListener(new TextWatcher() {
+      @Override public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+      }
+
+      @Override public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (scanListener != null) {
+          scanListener.onQrDataFound(charSequence.toString());
+        }
+
+      }
+
+      @Override public void afterTextChanged(Editable editable) {
+
+      }
+    });
 
     if (Build.VERSION.SDK_INT >= 21) {
       container.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
